@@ -2,22 +2,22 @@ import React, { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 import "./Chat.css";
 
-// Initialize socket connection
-const socket = io("http://localhost:5001");
+// ✅ Use your Render backend URL
+const socket = io("https://chat-backend-gxg8.onrender.com");
 
 function Chat() {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
 
-  // Fetch stored messages on load
+  // ✅ Fetch stored messages from Render backend
   useEffect(() => {
-    fetch("http://localhost:5001/api/chat/messages")
+    fetch("https://chat-backend-gxg8.onrender.com/api/chat/messages")
       .then((res) => res.json())
       .then((data) => setMessages(data))
       .catch((err) => console.error("Error fetching messages:", err));
   }, []);
 
-  // Listen for new messages via Socket.IO
+  // ✅ Listen for new messages via Socket.IO
   useEffect(() => {
     socket.on("chat message", (msg) => {
       setMessages((prev) => [...prev, msg]);
@@ -28,7 +28,7 @@ function Chat() {
     };
   }, []);
 
-  // Send a new message
+  // ✅ Send a new message
   const sendMessage = () => {
     if (message.trim()) {
       const msg = {
